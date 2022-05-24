@@ -1,0 +1,17 @@
+components:
+  #tfidf_vectorizer: {}
+  #word_cloud: {}
+  #sdp: {}
+  #infobox: {}
+simple_attributes:
+  store_path:
+    type_token: doc
+    value: /Users/ines/Projects/narrative_prototype/wikipedia_narrative/stored/
+getter_attributes:
+  infobox: 
+    getter_name: get_infobox
+    type_extension: doc
+method_attributes:
+  sdp: 
+    method_name: sdp
+    type_extension: span

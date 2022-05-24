@@ -1,0 +1,25 @@
+path_for_event:
+  "<event> part of <revolution>":
+    type: revolution
+    id: Q6534
+    query_type: obj-part-of-id
+  "<revolution> has significant event <event>":
+    type: revolution
+    id: Q6534
+    query_type: id-has-significant-event-obj
+  "<event> is instance of <historical country> and has country <c>":
+    type: country
+    id: Q142
+    query_type: obj-instance-of-historical-country-and-has-country-id
+type_data: events
+col_wikidata: event
+col_main_name: eventLabel
+graph_doc: event-collect-explain
+session_state_var_page: event_collection_page
+max_nb: 10
+session_state_wd: event_wd_time
+session_state_wp: event_wp_time
+pointintime: pointintime
+data_cached: event_collected
+year_begin: '1789'
+year_end: '1799'
