@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Converting triples/key-values to sem-friendly format """
 from rdflib.namespace import RDF, RDFS
 from rdflib import URIRef, Namespace, Literal, Graph, XSD
@@ -64,7 +65,6 @@ class WikidataConverter(Converter):
             'dissolved, abolished or demolished date': self._add_end_ts,
             'location': self._add_location,
             'country': self._add_location,
-            # 'coordinate location': self._add_coordinatelocation,
             'located in the administrative territorial entity': self._add_location,
             'continent': self._add_location,
             'participant': self._add_participant,
@@ -165,16 +165,6 @@ class WikidataConverter(Converter):
             graph = self._add_label(graph=graph, uri=self.part_to_wd[pred], label=pred)
 
         return graph, counter
-
-    # def _add_coordinatelocation(self, graph, row):
-    #     # doesn't work
-    #     sub, obj, obj_l, pred = self._get_variables(row)
-    #     graph.add((sub, self.ns_sem.hasPlace, Literal(obj, self.geom)))
-    #     return graph
-    #     graph.add((obj, RDF.type, self.ns_sem.Place))
-    #     graph.add((obj, self.ns_sem.placeType, self.loc_to_wd[pred]))
-    #     graph.add((self.loc_to_wd[pred], RDF.type, self.ns_sem.PlaceType))
-    #     return self._add_label(graph, self.loc_to_wd[pred], pred)
 
     @staticmethod
     def _add_linked_classes(graph, subjects, pred, objects):
@@ -436,7 +426,7 @@ def build_graph_by_type(df_pd, save_folder, converter, c_type):
         graph.serialize(destination=f"{save_folder}/{type_link}_{c_type}.ttl", format="turtle")
 
 def build_graph_by_type_combined(df1, save_folder, converter1, c_type1,
-                                    df2, converter2, c_type2):
+                                 df2, converter2, c_type2):
     """ Filtering graph on type of link (causal etc) (wikipedia+wikidata) """
     for type_link in df1.type.unique():
         curr_df = df1[df1.type == type_link]

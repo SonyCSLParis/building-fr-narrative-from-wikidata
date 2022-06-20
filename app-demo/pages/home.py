@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Home page of the app """
 
 import os

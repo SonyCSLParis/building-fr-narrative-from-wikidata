@@ -41,11 +41,16 @@ cd app-demo && streamlit run app.py
 
 - [settings](./settings)
 
-- [wikidata_sparql](./wikidata_sparql) 
+- [kb_sparql](./kb_sparql) 
   
-  Using a SPARQL wrapper to query wikidata
+  Using a SPARQL wrapper to query wikidata, as well as the knowledge graph created throughout the process.
 
 - [wikipedia_narrative](./wikipedia_narrative)
 
-    Used for the pilot: mapping Wikidata/Wikipedia, extracting infoboxes from Wikipedia
-  
+    Used for the pilot: mapping Wikidata/Wikipedia, extracting infoboxes and text from Wikipedia
+
+
+## Citation
+If using this work, please cite the following:
+
+```<to-be-completed>```

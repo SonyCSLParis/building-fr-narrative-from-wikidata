@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
 """
 Main app sript for the streamlit web interface:
 Home: describing the project
 1. Event Collection: collect data from wikidata (events)
-2. Link Extraction: Extracting semi structured data from Wikipedia (infoboxes)
-3. Build Network: ~ Narrative Network
-4. Display Network: Visualising the steps of network construction
+2. Wikidata Enrichment: extracting outoging nodes from Wikidata
+3. Link Extraction: Extracting semi structured data from Wikipedia (infoboxes)
+4. Build Network: Populate simple event model ontology
+5. Display Network: Visualising the steps of network construction
 """
 
 import streamlit as st

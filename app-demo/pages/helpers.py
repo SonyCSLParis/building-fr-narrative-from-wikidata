@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-Pagination code found in one of streamlit demos:
-https://github.com/streamlit/release-demos/blob/0.84/0.84/demos/pagination.py
+Backend helpers for the streamlit app
 """
 
 import base64
@@ -11,7 +11,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 from wikipedia_narrative.map_wikidata_wikipedia import add_wikipedia_page
-from wikidata_sparql.gather_events import build_args_for_collect, collect_data
+from kb_sparql.gather_events import build_args_for_collect, collect_data
 from .vis import get_fig_hist_plotly
 
 
@@ -107,7 +107,7 @@ def collect_data_st(content: dict):
         # Visualisations (type of events, duplicates events, type of instances)
         st.plotly_chart(
             figure_or_data=get_fig_hist_plotly(
-                df=df_wd, x="query_type",
+                df_input=df_wd, x_data="query_type",
                 tickangle=45, title="Distribution of types of events retrieved from Wikidata"),
                 use_container_width=True)
 
@@ -159,7 +159,10 @@ def display_html_graph(html_path: str, size: int):
 
 
 def paginate(df_pd: pd.core.frame.DataFrame, session_state_var_page: str, max_nb: int):
-    """ Paginated dataframe """
+    """
+    Pagination code found in one of streamlit demos:
+    https://github.com/streamlit/release-demos/blob/0.84/0.84/demos/pagination.py
+    """
     if session_state_var_page not in st.session_state:
         st.session_state[session_state_var_page] = 0
 

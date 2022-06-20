@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 """ Querying KG with SPARQL queries """
 import re
 import argparse
 import pandas as pd
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-from wikidata_sparql.query_db import SPARQL_QUERIES
+from kb_sparql.query_db import SPARQL_QUERIES
 from settings.settings import AGENT
 
 

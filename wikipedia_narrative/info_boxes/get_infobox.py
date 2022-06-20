@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Retrieving info from infoboxes """
 import re
 import wptools

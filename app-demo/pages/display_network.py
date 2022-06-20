@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Display network Streamlit page """
 from datetime import datetime
 import streamlit as st
@@ -5,6 +6,8 @@ import pandas as pd
 from streamlit_timeline import timeline
 from prettytable import PrettyTable
 
+from kb_sparql.local_kg_query import QUERY_EVENT, QUERY_POINT_IN_TIME, \
+    QUERY_EVENT_TYPE, QUERY_ACTOR_ROLE
 from .helpers import get_session_state_val
 
 def pre_process(node):
@@ -77,41 +80,16 @@ def app():
         data = {'subject': [sub], 'predicate': [pred], "object": [obj]}
         graph_csv = pd.concat([graph_csv, pd.DataFrame(data)], ignore_index=True)
 
-    events = []
-
-    query_tr = """
-    PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    SELECT DISTINCT ?event ?l ?tbegin ?tend
-    WHERE {
-        ?event rdf:type sem:Event .
-        ?event rdfs:label ?l .
-        ?event sem:hasBeginTimeStamp ?tbegin .
-        ?event sem:hasEndTimeStamp ?tend .
-    }
-    ORDER BY ASC(?tbegin)
-    """
-    qres_tr = graph.query(query_tr)
-    event_uris = []
+    events, event_uris = [], []
+    # Retrieving events with begin&end timestamps
+    qres_tr = graph.query(QUERY_EVENT)
     for row in qres_tr:
         if row.event not in event_uris:
             events.append((row.event, str(row.l), row.tbegin, row.tend))
             event_uris.append(row.event)
 
-    query_pit = """
-    PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    SELECT DISTINCT ?event ?l ?pointintime
-    WHERE {
-        ?event rdf:type sem:Event .
-        ?event rdfs:label ?l .
-        ?event sem:hasTimeStamp ?pointintime
-    }
-    ORDER BY ASC(?pointintime)
-    """
-    qres_pit = graph.query(query_pit)
+    # Retrieving events with points in time (start=end date)
+    qres_pit = graph.query(QUERY_POINT_IN_TIME)
     for row in qres_pit:
         if row.event not in event_uris:
             events.append((row.event, str(row.l), row.pointintime, None))
@@ -120,47 +98,16 @@ def app():
     events.sort(key = lambda x: x[2])
     text_info = get_session_state_val(var="wikipedia_text")
 
-    res = graph.query(
-        """
-        PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX wd: <http://www.wikidata.org/entity/>
-        SELECT DISTINCT ?s ?l ?etl
-        WHERE {
-            ?s ?p ?o .
-            ?s rdfs:label ?l .
-            ?s sem:eventType ?eventType .
-            ?eventType rdfs:label ?etl
-        }
-        """
-    )
+    # Info about event types
+    res = graph.query(QUERY_EVENT_TYPE)
     info_event_type = pd.DataFrame(columns=["event", "label", "event_type"])
     for row in res:
         data = {'event': [row.s], 'label': [str(row.l)], "event_type": [row.etl]}
         info_event_type = pd.concat([info_event_type, pd.DataFrame(data)], ignore_index=True)
     info_event_type = info_event_type.drop_duplicates()
 
-
-    res = graph.query(
-        """
-        PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX wd: <http://www.wikidata.org/entity/>
-        SELECT DISTINCT ?s ?l ?valreadable ?rolereadable
-        WHERE {
-            ?s ?p ?o .
-            ?s rdf:type sem:Event .
-            ?s rdfs:label ?l .
-            ?s sem:hasActor ?roleType .
-            ?roleType rdf:value ?val .
-            ?val rdfs:label ?valreadable
-            OPTIONAL {?roleType sem:roleType ?role .
-                      ?role rdfs:label ?rolereadable .}
-        }
-        """
-    )
+    # Info about actors and roles
+    res = graph.query(QUERY_ACTOR_ROLE)
     info_actor = pd.DataFrame(columns=["event", "label", "actor", "role"])
     for row in res:
         data = {'event': [row.s], 'label': [str(row.l)],

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Build network Streamlit page """
 from datetime import datetime
 
@@ -14,8 +15,9 @@ def app():
     st.title("Build the network")
     st.markdown("""
     #
-    Clicking the button will have the narrative network constructed. Extracted
-    info from last steps will be converted to RDF triples.
+    Clicking the button will have the narrative network constructed. 
+    
+    Extracted info from last steps will be converted to RDF triples.
     """)
 
     df_wp = get_session_state_val(var="wikipedia_for_graph")
@@ -23,11 +25,11 @@ def app():
 
     if isinstance(df_wd, pd.DataFrame) and isinstance(df_wp, pd.DataFrame):
 
-        # Selecting input objects to use to build the network
         st.write("##")
         if st.button("Build network"):
-            print('hello')
 
+            # Populating ontology by converting wikipedia semi-structured data
+            # and wikidata triples
             build_start = datetime.now()
             graph = init_graph()
             converter_wp = WikipediaConverter()

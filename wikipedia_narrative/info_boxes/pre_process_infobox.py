@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Pre processing info boxes labels """
 import os
 import re

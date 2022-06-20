@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Html helpers for infoboxes """
 import urllib3
 import requests

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Streamlit page: collecting events
 """
@@ -30,7 +31,7 @@ def app():
         * <event> **part of** <French Revolution>
         * <French Revolution> **has significant event** <event>
         * <event> **is instance of** <historical country>
-        and **has country** <France> 
+        and **has country** <France>
 
         An additional filter was added to extract events in the right time range.
         """

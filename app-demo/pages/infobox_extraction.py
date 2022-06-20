@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Infobox extraction Streamlit page """
 import os
 import json
@@ -62,21 +63,20 @@ def get_one_infobox(wp_page_name: str, url: str, wd_page_name: str,
 
     if get_image:
         return (wd_page_name, add_url(infobox, links), get_img_src(html_content))
-    else:
-        return (wd_page_name, add_url(infobox, links), None)
+    return (wd_page_name, add_url(infobox, links), None)
 
 
 @st.cache(show_spinner=False)
 def get_all_infobox(input_data: dict):
     """ Collecting all infoboxes """
-    pool = mp.Pool( mp.cpu_count()  )
-    res = pool.starmap(get_one_infobox,
-                       [(x["wikipedia"].split("/")[-1].replace("_", " "),
-                         x["wikipedia"],
-                         x["event_wd_name"],
-                         input_data["options"]) for _, x in input_data["wp_data"].items()])
-    pool.close()
-    pool.join()
+    with mp.Pool(mp.cpu_count()) as pool:
+        res = pool.starmap(get_one_infobox,
+                        [(x["wikipedia"].split("/")[-1].replace("_", " "),
+                            x["wikipedia"],
+                            x["event_wd_name"],
+                            input_data["options"]) for _, x in input_data["wp_data"].items()])
+        pool.close()
+        pool.join()
 
     input_data = input_data["wp_data"]
 
@@ -124,8 +124,7 @@ def find_wd_id(name):
 
     if page.data.get('wikibase'):
         return page.data.get('wikibase')
-    else:
-        return "Q"
+    return "Q"
 
 def add_wd_id(df_wp):
     """ Adding wikidata ID of each Wikipedia feature"""

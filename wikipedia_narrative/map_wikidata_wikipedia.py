@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Finding Wikipedia page from a Wikidata page
 """
@@ -14,12 +15,11 @@ def add_wikipedia_page(df_pd: pd.core.frame.DataFrame,
                        save_path:str = None) -> pd.core.frame.DataFrame:
     """ Adding a wikipedia_page column in the input df_pd.
     If found adds link to English Wikipedia page. Parallelized. """
-    num_workers = mp.cpu_count()
-    pool = mp.Pool(num_workers)
-    df_pd["wikipedia_page"] = pool.map(get_wp_url_from_wd_id,
-                                    [x.split("/")[-1] for x in df_pd[col_wikidata].values])
-    pool.close()
-    pool.join()
+    with mp.Pool(mp.cpu_count()) as pool:
+        df_pd["wikipedia_page"] = pool.map(get_wp_url_from_wd_id,
+                                        [x.split("/")[-1] for x in df_pd[col_wikidata].values])
+        pool.close()
+        pool.join()
     if save_path:
         df_pd.to_csv(save_path)
     return df_pd

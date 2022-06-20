@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 """ Collect events """
 import argparse
 import pandas as pd
 import streamlit as st
-import wikidata_sparql.sparql_query as sparql_query
+import kb_sparql.sparql_query as sparql_query
 
 ARGS = [
     {"id": "Q6534", "query_type": "obj-part-of-id",
@@ -82,14 +83,15 @@ def check_args(args: dict):
 
 
 if __name__ == '__main__':
-    """ To be executed in shell from `wikidata_sparql` folder
+    """ To be executed in shell from `kb_sparql` folder
     To first collect the events and then retrieve the outgoing links,
     below are examples of scripts to execute:
     - python gather_events.py -t collect \
         -s ../data/events_demo.csv
     - python gather_events.py -t expand \
         -s ../data/unique_events_forward_links.csv \
-            -p ../data/events_demo.csv """
+            -p ../data/events_demo.csv
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("-t", '--type', required=True,
                     help="Type of objects to retrieve from wikidata." +

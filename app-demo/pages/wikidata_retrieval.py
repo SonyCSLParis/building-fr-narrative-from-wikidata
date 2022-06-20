@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Wikidata info retrieval """
 import os
 import yaml
@@ -5,8 +6,8 @@ import streamlit as st
 import pandas as pd
 from settings.settings import ROOT_PATH
 
-from wikidata_sparql.query_db import SPARQL_QUERIES
-from wikidata_sparql.sparql_query import run_query_return_df
+from kb_sparql.query_db import SPARQL_QUERIES
+from kb_sparql.sparql_query import run_query_return_df
 from .helpers import get_session_state_val
 from .helpers import check_session_state_value, init_update_session_state
 
@@ -112,10 +113,3 @@ def app():
                 .agg({'eventLabel': ['count', 'nunique']}) \
                     .reset_index()
         )
-
-        # st.write(
-        #     df_filter_wd[
-        #         ~((df_filter_wd.predicate=="part of") &
-        #         (df_filter_wd.objectLabel=='French Revolution'))] \
-        #         .groupby(['type']).agg({'eventLabel': ['count', 'nunique']}) \
-        #         .reset_index())

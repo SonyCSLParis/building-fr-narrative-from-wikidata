@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+""" Getting content from Wikipedia """
 import re
-import wikipedia
 from collections import defaultdict
+import wikipedia
 
 class WikipediaPage:
+    """ Main class """
 
     def __init__(self, title:str = None, content: str = None, **additional_content: dict):
         """ Wikipedia Page Content from either
@@ -16,18 +19,18 @@ class WikipediaPage:
         if not content:
             try:
                 page = wikipedia.page(title)
-            except Exception as e:
-                print(e)
+            except Exception as exception:
+                print(exception)
                 raise ValueError("Could not get the page from title")
-            
+
             self.title = page.title
             self.content = page.content
             self.url = page.url
-        
+
         else:
             self.title = title
             self.content = content
-        
+
         self.section_title = defaultdict(list)
         self.lines = [line for line in self.content.split("\n") if line != '']
 
@@ -43,37 +46,35 @@ class WikipediaPage:
         # Any additional content data for the context
         self.additional_content = additional_content if additional_content else dict()
 
-    
-    def _get_sections(self, title: str, lines: list[str], nb: int):
+
+    def _get_sections(self, title: str, lines: list[str], iteration: int):
         """ Extract sections from wikipedia text content
         Using lines delimitations as helpers """
-        self.section_title[nb-2].append(title)
+        self.section_title[iteration-2].append(title)
         sub_sections = [[]]
         for line in lines:
-            if line.strip().startswith("="*nb) and (not line.strip().startswith("="*(nb+1))):
+            if line.strip().startswith("="*iteration) and \
+                (not line.strip().startswith("="*(iteration+1))):
                 sub_sections.append(list())
             sub_sections[-1].append(line.strip())
-        
+
         sections = dict(title=title, main='\n'.join(sub_sections[0]))
         for index, sub_section in enumerate(sub_sections[1:]):
-            sections[index+1] = self._get_sections(title=sub_section[0].replace("="*nb, ""),
+            sections[index+1] = self._get_sections(title=sub_section[0].replace("="*iteration, ""),
                                                    lines=sub_section[1:],
-                                                   nb=nb+1)
-        
+                                                   iteration=iteration+1)
+
         return sections
-    
-    def get_sections(self):
-        self.sections = self._get_sections(title=self.title, lines=self.lines, nb=2)
-    
+
     def _preprocess_content_for_pipeline(self, content: str):
         """ Remove noisy content (e.g. references/notes etc) """
         for section in self.noisy_sections:
-            m = re.search(self.noisy_pattern.format(section), content)
-            if m:
-                content = content.replace(m.group(0), "==")
+            regex_search = re.search(self.noisy_pattern.format(section), content)
+            if regex_search:
+                content = content.replace(regex_search.group(0), "==")
         return content
-    
-    def format_data_for_pipeline(self, granularity: str, titles: bool, nb=2):
+
+    def format_data_for_pipeline(self, granularity: str, titles: bool, iteration=2):
         """ Retrieve data in good format for Spacy pipeline """
         context = defaultdict(lambda: None)
         context.update(self.additional_content)
@@ -84,13 +85,15 @@ class WikipediaPage:
                 return [(self.content_filtered.replace("=", ""),
                          context)]
             else:
-                return [('\n'.join([line for line in self.lines_filtered if not line.startswith("==")]),
+                return [('\n'.join([line for line in self.lines_filtered \
+                            if not line.startswith("==")]),
                          context)]
-            
+
         else:  # granularity = 'section'
             sub_sections = [[]]
             for line in self.lines_filtered:
-                if line.strip().startswith("="*nb) and (not line.strip().startswith("="*(nb+1))):
+                if line.strip().startswith("="*iteration) and \
+                    (not line.strip().startswith("="*(iteration+1))):
                     sub_sections.append(list())
                 sub_sections[-1].append(line.strip())
             data = [('\n'.join(sub_sections[0]), context)]
@@ -102,14 +105,15 @@ class WikipediaPage:
                     data.append(('\n'.join(section[1:]).replace("=", ""),
                                  curr_context))
                 else:
-                    data.append(('\n'.join([line for line in section[1:] if not line.startswith("===")]).replace("=", ""),
+                    data.append(('\n'.join([line for line in section[1:] \
+                                    if not line.startswith("===")]).replace("=", ""),
                                  curr_context))
 
         return data
 
 if __name__ == '__main__':
-    page = WikipediaPage("Women's March on Versailles")
+    PAGE = WikipediaPage("Women's March on Versailles")
 
-    print(page.content)
+    print(PAGE.content)
     print('########')
-    print(page.format_data_for_pipeline(granularity='event', titles=True))
+    print(PAGE.format_data_for_pipeline(granularity='event', titles=True))

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 SPARQL_QUERIES:
 - keys: naming used through the repo for specific SPARQL queries
