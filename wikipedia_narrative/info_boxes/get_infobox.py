@@ -73,12 +73,14 @@ def add_url(infobox: dict, links: dict[str, str]) -> dict[str, dict]:
     2. Adding corresponding href found in infobox """
     res = dict()
     for pred, val in infobox.items():
-        if isinstance(type(val["text"]), str):
+        if isinstance(val["text"], str):
             urls = list()
             cand_links = re.findall(pattern="\\[\\[([^\\[]+)\\]\\]+?", string=val["text"])
+            print(cand_links)
             for cands in cand_links:
                 for cand in cands.split("|"):
                     try:
+                        print(cand.strip())
                         urls.append(f"https://en.wikipedia.org{links[cand.strip()]}")
                     except Exception as error:
                         print(error)
@@ -94,5 +96,6 @@ if __name__ == '__main__':
     INFOBOX = extract_infobox_no_url(page_name='Coup of 18 Fructidor', options=["1", '2', '3'])
     HTML_CONTENT = get_html_from_url(url="https://en.wikipedia.org/wiki/Coup_of_18_Fructidor")
     LINKS = get_link_from_html(html_content=HTML_CONTENT)
+    print(LINKS)
     RES = add_url(INFOBOX, LINKS)
     print(RES)

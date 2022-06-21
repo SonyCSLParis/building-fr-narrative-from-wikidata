@@ -95,7 +95,8 @@ def clean_df(df_input):
     }
     replacements = [("%C3%A9", "é"), ("%C3%89", "é"), ("%C3%A8", "è"),
                     ('%C3%A7', 'ç'), ('%C3%8E', "Î"), ("%C3%B4", 'ô'),
-                    ("%27", "'"), ("%C3%AB", "ë"), ("%E2%80%93", "-"), ("%C3%A1", "á")]
+                    ("%27", "'"), ("%C3%AB", "ë"), ("%E2%80%93", "-"), ("%C3%A1", "á"),
+                    ("%C3%B3", "ó"), ("%C3%AD", "í"), ("%C4%85", "ą"), ("%C3%81", "Á")]
 
     df_wp = df_input[df_input.object.str.startswith("https")][cols_to_keep]
 
@@ -121,7 +122,7 @@ def find_wd_id(name):
     print(name)
     page = wptools.page(name)
     page.get_parse()
-
+    
     if page.data.get('wikibase'):
         return page.data.get('wikibase')
     return "Q"
@@ -214,7 +215,7 @@ def app():
 
     if st.button("Get Info boxes"):
         data, not_found_events = get_page_content(
-            df=df_wd, col_main_name=content["col_main_name"],
+            df_input=df_wd, col_main_name=content["col_main_name"],
             col_wd_name=content['col_wikidata'], col_wp_name="wikipedia_page",
             col_query_type="query_type", pointintime=content['pointintime'],
             extract_text=True)
@@ -330,8 +331,8 @@ def app():
 
                     # Extracting info from each feature in Wikipedia
                     st.write("## Necessary information to extract triples")
-
                     df_wp = clean_df(df_input=df_filter_wp)
+                    st.write(df_wp)
                     df_wp = add_wd_id(df_wp)
 
                     df_wd = get_session_state_val(var="wikidata_collected") \

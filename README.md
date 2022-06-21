@@ -8,6 +8,18 @@ This project is currently undergoing in the framework of [MUHAI European Project
 
 ## Set Up
 
+If using https, run:
+```python
+git clone https://github.com/SonyCSLParis/building-fr-narrative-from-wikidata.git 
+cd building-fr-narrative-from-wikidata
+```
+
+If using ssh, run:
+```python
+git clone git@github.com:SonyCSLParis/building-fr-narrative-from-wikidata.git
+cd building-fr-narrative-from-wikidata
+```
+
 In the `settings` folder, create a `private.py`file and add the following paramters:
 * ROOT_PATH: root path to the project directory
 * AGENT: your user agent that you can find on the web.
@@ -15,7 +27,11 @@ In the `settings` folder, create a `private.py`file and add the following paramt
 
 Version of Python used: 3.9.4
 
-Create a virtual env
+Create a virtual env (example below with conda)
+```python
+conda create -n <yourenvname> python=3.9.4
+```
+
 ```python
 pip install -r requirements.txt
 python setup.py install
