@@ -1,7 +1,7 @@
 pyyaml==5.4.1
 requests==2.25.1
 SPARQLWrapper==1.8.5
-pandas==1.2.4
+pandas==1.2.5
 wikipedia==1.4.0
 lxml==4.9.0
 html5lib==1.1
@@ -9,8 +9,8 @@ wptools==0.4.17
 streamlit==0.87.0
 pyvis==0.1.9
 streamlit-agraph==0.0.35
-rdflib==5.0.0
+rdflib==6.1.1
 streamlit-timeline==0.0.2
 PrettyTable==3.2.0
-protobuf==3.20.0
+protobuf==3.16.0
 plotly==4.14.3
