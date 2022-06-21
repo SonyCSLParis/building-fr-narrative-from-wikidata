@@ -9,7 +9,7 @@ scipy
 wikipedia==1.4.0
 spacy==3.0.6  # python -m spacy download en_core_web_sm
 scikit-learn==0.24.2
-nltk==3.6.2  # import nltk; nltk.download("stopwords")
+nltk==3.6.6  # import nltk; nltk.download("stopwords")
 wordcloud==1.8.1
 gensim==4.0.1
 python-Levenshtein==0.12.2
