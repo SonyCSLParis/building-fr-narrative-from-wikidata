@@ -332,7 +332,6 @@ def app():
                     # Extracting info from each feature in Wikipedia
                     st.write("## Necessary information to extract triples")
                     df_wp = clean_df(df_input=df_filter_wp)
-                    st.write(df_wp)
                     df_wp = add_wd_id(df_wp)
 
                     df_wd = get_session_state_val(var="wikidata_collected") \

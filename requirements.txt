@@ -10,5 +10,7 @@ streamlit==0.87.0
 pyvis==0.1.9
 streamlit-agraph==0.0.35
 rdflib==5.0.0
-streamlit-pipeline==0.0.2
+streamlit-timeline==0.0.2
 PrettyTable==3.2.0
+protobuf==3.20.0
+plotly==4.14.3

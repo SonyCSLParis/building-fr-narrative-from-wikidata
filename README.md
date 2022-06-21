@@ -27,22 +27,40 @@ In the `settings` folder, create a `private.py`file and add the following paramt
 
 Version of Python used: 3.9.4
 
-Create a virtual env (example below with conda)
-```python
+Create a virtual env and activate it (example below with conda)
+```bash
 conda create -n <yourenvname> python=3.9.4
+conda activate <yourenvname>
 ```
 
-```python
+```bash
 pip install -r requirements.txt
+```
+
+Later when launching the app, you might encounter the following error:
+```bash
+ImportError: pycurl: libcurl link-time ssl backends (secure-transport, openssl) do not include compile-time ssl backend (none/other)
+```
+
+To prevent this error, and following [this link](https://stackoverflow.com/questions/21096436/ssl-backend-error-when-using-openssl), you can run the followings:
+```bash
+pip uninstall pycurl
+export PYCURL_SSL_LIBRARY=openssl
+pip install pycurl --no-cache-dir
+```
+
+Then run the following:
+```bash
 python setup.py install
 ```
 
 
-To run the streamlit app
-
-```
+Finally, to run the streamlit app
+```bash
 cd app-demo && streamlit run app.py
 ```
+
+
 
 
 ## Structure
