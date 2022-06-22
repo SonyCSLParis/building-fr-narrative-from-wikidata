@@ -9,6 +9,15 @@ from graph_building.converter import WikipediaConverter, WikidataConverter, init
 from .helpers import get_session_state_val, check_session_state_value, \
     init_update_session_state
 
+@st.cache(show_spinner=False)
+def build_network(df_wp, df_wd):
+    """ Build graph with rdf triples """
+    graph = init_graph()
+    converter_wp = WikipediaConverter()
+    graph, counter = converter_wp(graph, df_wp)
+
+    converter_wd = WikidataConverter()
+    return converter_wd(graph, df_wd, counter)
 
 def app():
     """ Main app page """
@@ -31,12 +40,7 @@ def app():
             # Populating ontology by converting wikipedia semi-structured data
             # and wikidata triples
             build_start = datetime.now()
-            graph = init_graph()
-            converter_wp = WikipediaConverter()
-            graph, counter = converter_wp(graph, df_wp)
-
-            converter_wd = WikidataConverter()
-            graph, counter = converter_wd(graph, df_wd, counter)
+            graph, counter = build_network(df_wp=df_wp, df_wd=df_wd)
 
             if check_session_state_value(var="data_in_cache", value=True):
                 init_update_session_state(var="graph", value=graph)

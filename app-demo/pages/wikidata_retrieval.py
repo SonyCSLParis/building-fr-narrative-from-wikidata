@@ -91,8 +91,8 @@ def app():
         * {df_wd.shape[0]}: Number of triples extracted for all events
         * {df_wd[df_wd.predicate.isin(predicates_narrative_wd)].shape[0]}: Number of triples
         with relevant information for the narrative
-        * {df_wd.wd_page.unique().shape[0]} Number of events for the narrative
-        * {df_filter_wd.wd_page.unique().shape[0]} Number of events that contain at least one
+        * {df_wd.wd_page.unique().shape[0]}: Number of events for the narrative
+        * {df_filter_wd.wd_page.unique().shape[0]}: Number of events that contain at least one
         useful information triple for the narrative
         #
         """)

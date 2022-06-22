@@ -14,6 +14,7 @@ def pre_process(node):
     """ URI > more human-readable """
     return node.split("/")[-1].replace('_', ' ')
 
+@st.cache(show_spinner=False)
 def pd_to_html(df_pd):
     """ dataframe to html table """
 
@@ -23,6 +24,7 @@ def pd_to_html(df_pd):
         t_html.add_row([row[col] for col in cols])
     return t_html.get_html_string()
 
+@st.cache(show_spinner=False)
 def get_timeline_data(events, text_info, info_event_type, info_actor):
     """ Timeline data in order """
     data = {
@@ -61,6 +63,10 @@ def get_timeline_data(events, text_info, info_event_type, info_actor):
         data["events"].append(curr_info)
     return data
 
+@st.cache(show_spinner=False)
+def run_sparql_query(graph, query):
+    """ Querying with sparql """
+    return list(graph.query(query))
 
 def app():
     """ Main func """
@@ -82,14 +88,14 @@ def app():
 
     events, event_uris = [], []
     # Retrieving events with begin&end timestamps
-    qres_tr = graph.query(QUERY_EVENT)
+    qres_tr = run_sparql_query(graph=graph, query=QUERY_EVENT)
     for row in qres_tr:
         if row.event not in event_uris:
             events.append((row.event, str(row.l), row.tbegin, row.tend))
             event_uris.append(row.event)
 
     # Retrieving events with points in time (start=end date)
-    qres_pit = graph.query(QUERY_POINT_IN_TIME)
+    qres_pit = run_sparql_query(graph=graph, query=QUERY_POINT_IN_TIME)
     for row in qres_pit:
         if row.event not in event_uris:
             events.append((row.event, str(row.l), row.pointintime, None))
@@ -99,7 +105,7 @@ def app():
     text_info = get_session_state_val(var="wikipedia_text")
 
     # Info about event types
-    res = graph.query(QUERY_EVENT_TYPE)
+    res = run_sparql_query(graph=graph, query=QUERY_EVENT_TYPE)
     info_event_type = pd.DataFrame(columns=["event", "label", "event_type"])
     for row in res:
         data = {'event': [row.s], 'label': [str(row.l)], "event_type": [row.etl]}
@@ -107,7 +113,7 @@ def app():
     info_event_type = info_event_type.drop_duplicates()
 
     # Info about actors and roles
-    res = graph.query(QUERY_ACTOR_ROLE)
+    res = run_sparql_query(graph=graph, query=QUERY_ACTOR_ROLE)
     info_actor = pd.DataFrame(columns=["event", "label", "actor", "role"])
     for row in res:
         data = {'event': [row.s], 'label': [str(row.l)],
