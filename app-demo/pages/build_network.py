@@ -40,7 +40,7 @@ def app():
             # Populating ontology by converting wikipedia semi-structured data
             # and wikidata triples
             build_start = datetime.now()
-            graph, counter = build_network(df_wp=df_wp, df_wd=df_wd)
+            graph, _ = build_network(df_wp=df_wp, df_wd=df_wd)
 
             if check_session_state_value(var="data_in_cache", value=True):
                 init_update_session_state(var="graph", value=graph)

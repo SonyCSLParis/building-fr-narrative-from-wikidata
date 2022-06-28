@@ -1,11 +1,8 @@
 # Narrative Prototype - The French Revolution
 
-[WIP]
-
 This projects aims to be a first prototype on narrative exploration. In particular, the focus of the study is the French Revolution. The idea is to explore events and participants throughout structured ([Wikidata](https://www.wikidata.org)) and unstructured ([Wikipedia](https://www.wikipedia.org)) data. Structured data can help better grasp the main entities, objects or events, while unstructured data like text can help make hypotheses on how events are linked.
 
-This project is currently undergoing in the framework of [MUHAI European Project](https://www.muhai.org/). 
-
+---
 ## Set Up
 
 If using https, run:
@@ -36,7 +33,18 @@ conda activate <yourenvname>
 ```bash
 pip install -r requirements.txt
 ```
+Then run the following:
+```bash
+python setup.py install
+```
 
+
+Finally, to run the streamlit app
+```bash
+cd app-demo && streamlit run app.py
+```
+---
+## Troubleshooting
 Later when launching the app, you might encounter the following error:
 ```bash
 ImportError: pycurl: libcurl link-time ssl backends (secure-transport, openssl) do not include compile-time ssl backend (none/other)
@@ -49,20 +57,8 @@ export PYCURL_SSL_LIBRARY=openssl
 pip install pycurl --no-cache-dir
 ```
 
-Then run the following:
-```bash
-python setup.py install
-```
 
-
-Finally, to run the streamlit app
-```bash
-cd app-demo && streamlit run app.py
-```
-
-
-
-
+---
 ## Structure
 
 - [app-demo](./app-demo)
@@ -82,9 +78,24 @@ cd app-demo && streamlit run app.py
 - [wikipedia_narrative](./wikipedia_narrative)
 
     Used for the pilot: mapping Wikidata/Wikipedia, extracting infoboxes and text from Wikipedia
+---
+## References
 
 
+
+<img align="left" width="70" height="50" src=./Flag_of_Europe.svg.png>
+
+The work reported in this paper was funded by the [European MUHAI project](https://muhai.org) from the  Horizon 2020 research and innovation  programme under grant number 951846 and the Sony Computer Science Laboratories Paris.
+<br/>
+<br/>
+This work is also the result of a joint collaboration between the following partners in the project: [Sony CSL Paris](https://csl.sony.fr/project/building-narratives-computationally-from-knowledge-graphs/) & [Vrije Universiteit Amsterdam](https://krr.cs.vu.nl)
+
+Contact: [Inès Blin](mailto:ines.blin@sony.com)
+
+[Corresponding paper link](https://drive.google.com/file/d/1LlM0_9_HF_jZwHw0wfNQDlxlOxa-DyAX/view?usp=sharing)
+
+---
 ## Citation
 If using this work, please cite the following:
 
-```<to-be-completed>```
+```<to-be-completed-when-proceedings-out>```
