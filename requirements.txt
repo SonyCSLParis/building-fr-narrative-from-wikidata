@@ -3,7 +3,7 @@ requests==2.25.1
 SPARQLWrapper==1.8.5
 pandas==1.2.5
 wikipedia==1.4.0
-lxml==4.9.0
+lxml==4.9.1
 html5lib==1.1
 wptools==0.4.17
 streamlit==0.87.0
