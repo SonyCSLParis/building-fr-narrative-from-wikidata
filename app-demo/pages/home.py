@@ -62,10 +62,9 @@ def app():
         )
 
     credits_image = [
-        "Tennis Court Oath:  https://www.connaissancedesarts.com/arts-expositions/" + \
-            "le-serment-du-jeu-de-paume-de-david-etude-dun-chef-doeuvre-11142980/ \n",
-        "Storming of the Bastille: https://fr.wikipedia.org/wiki/Révolution_française \n",
-        "Execution of Louis XVI: https://www.lelivrescolaire.fr/page/16858685 \n"]
+        "Tennis Court Oath:  https://commons.wikimedia.org/wiki/File:Le_Serment_du_Jeu_de_paume.jpg#/media/File:Le_Serment_du_Jeu_de_paume.jpg \n"
+        "Storming of the Bastille: https://commons.wikimedia.org/wiki/File:Prise_de_la_Bastille.jpg#/media/File:Prise_de_la_Bastille.jpg \n",
+        "Execution of Louis XVI: https://commons.wikimedia.org/wiki/File:Execution_of_Louis_XVI.jpg#/media/File:Execution_of_Louis_XVI.jpg \n"]
 
     with st.expander("Image Credits"):
         st.markdown("\n".join(credits_image))
