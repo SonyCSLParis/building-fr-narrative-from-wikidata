@@ -92,7 +92,7 @@ This work is also the result of a joint collaboration between the following part
 
 Contact: [Inès Blin](mailto:ines.blin@sony.com)
 
-[Corresponding paper link](https://drive.google.com/file/d/1LlM0_9_HF_jZwHw0wfNQDlxlOxa-DyAX/view?usp=sharing)
+[Corresponding paper link](https://ceur-ws.org/Vol-3322/short1.pdf)
 
 ---
 ## Citation
