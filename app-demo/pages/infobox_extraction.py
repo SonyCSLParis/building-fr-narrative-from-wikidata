@@ -121,7 +121,10 @@ def find_wd_id(name):
     """ Finf Wikidata URI from Wikipedia page name """
     print(name)
     page = wptools.page(name)
-    page.get_parse()
+    try:
+        page.get_parse()
+    except:
+        return "Q"
     
     if page.data.get('wikibase'):
         return page.data.get('wikibase')
@@ -342,6 +345,8 @@ def app():
                         .apply(lambda x: f"http://www.wikidata.org/entity/{x}")
                     df_wp = df_wp.drop_duplicates()
                     st.write(df_wp)
+                    add_download_link(to_download=df_wp.to_csv(index=False).encode(),
+                          file_end_name="collected-wikipedia-data-for-triples", extension="csv")
 
                     if check_session_state_value(var="data_in_cache", value=True):
                         init_update_session_state(var="wikipedia_for_graph", value=df_wp)

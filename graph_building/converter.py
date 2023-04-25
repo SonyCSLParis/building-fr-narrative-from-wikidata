@@ -174,7 +174,8 @@ class WikidataConverter(Converter):
         return graph
 
     def __call__(self, graph, df_info, counter=0):
-        events, event_labels = df_info.wd_page.unique(), df_info.eventLabel.unique()
+        helper_df = df_info[["wd_page", "eventLabel"]].drop_duplicates()
+        events, event_labels = helper_df.wd_page.values, helper_df.eventLabel.values
         for index, event in enumerate(events):
             graph = self._add_event(graph, event, event_labels[index])
             curr_df = df_info[df_info.wd_page == event]
@@ -373,7 +374,8 @@ class WikipediaConverter(Converter):
         return graph, counter
 
     def __call__(self, graph, df_info, counter=0):
-        events, event_labels = df_info.wd_page.values, df_info.eventLabel.values
+        helper_df = df_info[["wd_page", "eventLabel"]].drop_duplicates()
+        events, event_labels = helper_df.wd_page.values, helper_df.eventLabel.values
         for index, event in enumerate(events):
             print(event)
             graph = self._add_event(graph, event, event_labels[index])
@@ -438,3 +440,25 @@ def build_graph_by_type_combined(df1, save_folder, converter1, c_type1,
         graph.serialize(
             destination=f"{save_folder}/{type_link}_{c_type1}_{c_type2}.ttl",
             format="turtle")
+
+
+if __name__ == '__main__':
+    import pandas as pd
+    df_wp = pd.read_csv("../internship_laura_brongers/russian-ukraine-conflict/2023-04-25-15_25_05-collected-wikipedia.csv")
+    df_wd = pd.read_csv("../internship_laura_brongers/russian-ukraine-conflict/2023-04-25-15_29_00-collected-wikidata.csv")
+
+    # filters = (df_wp.eventLabel == "annexation of Crimea by the Russian Federation") & \
+    #     (df_wp.wptools_name == "Valentyn_Nalyvaichenko")
+    # filters = (df_wp.eventLabel == "annexation of Crimea by the Russian Federation") 
+    # df_wp = df_wp[filters]
+    
+
+    graph = init_graph()
+    converter_wp = WikipediaConverter()
+    graph, counter = converter_wp(graph, df_wp)
+    print(counter)
+    converter_wd = WikidataConverter()
+    graph, counter = converter_wd(graph, df_wd, counter)
+    graph.serialize("debug.ttl", format="ttl")
+
+
