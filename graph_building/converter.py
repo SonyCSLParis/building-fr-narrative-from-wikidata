@@ -442,23 +442,6 @@ def build_graph_by_type_combined(df1, save_folder, converter1, c_type1,
             format="turtle")
 
 
-if __name__ == '__main__':
-    import pandas as pd
-    df_wp = pd.read_csv("../internship_laura_brongers/russian-ukraine-conflict/2023-04-25-15_25_05-collected-wikipedia.csv")
-    df_wd = pd.read_csv("../internship_laura_brongers/russian-ukraine-conflict/2023-04-25-15_29_00-collected-wikidata.csv")
 
-    # filters = (df_wp.eventLabel == "annexation of Crimea by the Russian Federation") & \
-    #     (df_wp.wptools_name == "Valentyn_Nalyvaichenko")
-    # filters = (df_wp.eventLabel == "annexation of Crimea by the Russian Federation") 
-    # df_wp = df_wp[filters]
-    
-
-    graph = init_graph()
-    converter_wp = WikipediaConverter()
-    graph, counter = converter_wp(graph, df_wp)
-    print(counter)
-    converter_wd = WikidataConverter()
-    graph, counter = converter_wd(graph, df_wd, counter)
-    graph.serialize("debug.ttl", format="ttl")
 
 
