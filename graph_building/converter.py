@@ -289,6 +289,7 @@ class WikipediaConverter(Converter):
         graph.add((sub, self.ns_sem.hasActor, blank_n))
         graph.add((blank_n, RDF.type, self.ns_sem.Role))
         graph.add((blank_n, RDF.value, obj))
+        graph.add((obj, RDF.type, self.ns_sem.Actor))
         graph.add((obj, RDFS.label, Literal(obj_l)))
         graph.add((blank_n, self.ns_sem.roleType, self.participant_to_wd[pred]))
         graph.add((self.participant_to_wd[pred], RDF.type, self.ns_sem.RoleType))
